@@ -1,44 +1,74 @@
 var data;
 var pageNumber = 1;
 
-$(document).ready(() => {
-  $("#searchForm").on("submit", (e) => {
-    e.preventDefault();
-    let searchText = $("#searchText").val();
-    clearScreen();
-    getMovies(searchText);
-  });
-});
-
 function clearScreen() {
   document.getElementById("movie").innerHTML = "";
 }
 
-function getMovie(searchText) {
+function newSearch() {
+  clearScreen();
+  document.getElementById("searchText").value = "";
+  pageNumber = 1;
+}
+
+function getSearchResults(searchText) {
   clearScreen();
   $.get(
-    "https://www.omdbapi.com/?s=" + searchText + "&apikey=<API_KEY>",
+    "https://www.omdbapi.com/?s=" +
+      searchText +
+      "&apikey=<API_KEY>&page=" +
+      pageNumber,
     function (rawdata) {
       var rawstring = JSON.stringify(rawdata);
       data = JSON.parse(rawstring);
 
-      document.getElementById("movie").innerHTML += `<nav>
-      <ul class="pagination justify-content-end">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-        <li class="page-item"><a id="firstPage" class="page-link" href="#">${pageNumber}</a></li>
-        <li class="page-item"><a id="secondPage" class="page-link" href="#">${
-          pageNumber + 1
-        }</a></li>
-        <li class="page-item"><a id="thirdPage" class="page-link" href="#">${
-          pageNumber + 2
-        }</a></li>
+      if (pageNumber == 1) {
+        document.getElementById(
+          "movie"
+        ).innerHTML += `<nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item">
+            <a onclick="reset('${searchText}')" class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>`;
+      } else if (pageNumber == rawdata.totalResults / 10) {
+        document.getElementById(
+          "movie"
+        ).innerHTML += `<nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
         <li class="page-item">
-          <a id="next" class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>`;
+        <a onclick="reset('${searchText}')" class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+        </ul>
+      </nav>`;
+      } else {
+        document.getElementById(
+          "movie"
+        ).innerHTML += `<nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item">
+            <a onclick="reset('${searchText}')" class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+
+          <li class="page-item">
+            <a onclick="reset('${searchText}')" class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>`;
+      }
 
       for (var i = 0; i < 10; i += 5) {
         var firstTitle = data.Search[i].Title;
@@ -67,35 +97,35 @@ function getMovie(searchText) {
           <img class="card-img-top" src="${firstPosterURL}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">${firstTitle}</h5>
-            <button onclick="movieSelected('${firstIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
+            <button onclick="getMovieDetails('${firstIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
             </div>
         </div>
         <div class="card">
           <img class="card-img-top" src="${secondPosterURL}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">${secondTitle}</h5>
-            <button onclick="movieSelected('${secondIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
+            <button onclick="getMovieDetails('${secondIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
           </div>
         </div>
         <div class="card">
           <img class="card-img-top" src="${thirdPosterURL}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">${thirdTitle}</h5>
-            <button onclick="movieSelected('${thirdIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
+            <button onclick="getMovieDetails('${thirdIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
           </div>
         </div>
         <div class="card">
         <img class="card-img-top" src="${fourthPosterURL}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">${fourthTitle}</h5>
-          <button onclick="movieSelected('${fourthIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
+          <button onclick="getMovieDetails('${fourthIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
           </div>
       </div>
       <div class="card">
         <img class="card-img-top" src="${fifthPosterURL}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">${fifthTitle}</h5>
-          <button onclick="movieSelected('${fifthIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
+          <button onclick="getMovieDetails('${fifthIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
           </div>
       </div>
       </div>
@@ -105,7 +135,13 @@ function getMovie(searchText) {
   );
 }
 
-function movieSelected(imdbID) {
+// update page number
+function reset(searchText) {
+  pageNumber += 1;
+  getSearchResults(searchText);
+}
+
+function getMovieDetails(imdbID) {
   clearScreen();
   sessionStorage.setItem("movieId", imdbID);
   clearScreen();
@@ -117,7 +153,8 @@ function movieSelected(imdbID) {
 
       document.getElementById(
         "movie"
-      ).innerHTML += `<div class="card mb-3" style="width: 80%; margin: 5% 10% 5% 10%">
+      ).innerHTML += `<button onclick="newSearch()" type="button" class="btn btn-primary btn-sm">New Search</button>
+      <div class="card mb-3" style="width: 80%; margin: 5% 10% 5% 10%">
       <div class="row g-0">
         <div class="col-md-4">
           <img
