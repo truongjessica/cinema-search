@@ -97,35 +97,35 @@ function getSearchResults(searchText) {
           <img class="card-img-top" src="${firstPosterURL}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">${firstTitle}</h5>
-            <button onclick="getMovieDetails('${firstIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
+            <button onclick="getMovieDetails('${fourthIMDBid}')" type="button" class="btn btn-outline-info">Show details</button>
             </div>
         </div>
         <div class="card">
           <img class="card-img-top" src="${secondPosterURL}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">${secondTitle}</h5>
-            <button onclick="getMovieDetails('${secondIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
-          </div>
+            <button onclick="getMovieDetails('${secondIMDBid}')" type="button" class="btn btn-outline-info">Show details</button>
+            </div>
         </div>
         <div class="card">
           <img class="card-img-top" src="${thirdPosterURL}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">${thirdTitle}</h5>
-            <button onclick="getMovieDetails('${thirdIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
-          </div>
+            <button onclick="getMovieDetails('${thirdIMDBid}')" type="button" class="btn btn-outline-info">Show details</button>
+            </div>
         </div>
         <div class="card">
         <img class="card-img-top" src="${fourthPosterURL}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">${fourthTitle}</h5>
-          <button onclick="getMovieDetails('${fourthIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
+          <button onclick="getMovieDetails('${fourthIMDBid}')" type="button" class="btn btn-outline-info">Show details</button>
           </div>
       </div>
       <div class="card">
         <img class="card-img-top" src="${fifthPosterURL}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">${fifthTitle}</h5>
-          <button onclick="getMovieDetails('${fifthIMDBid}')" type="button" class="btn btn-primary btn-sm">Show details</button>
+          <button onclick="getMovieDetails('${fifthIMDBid}')" type="button" class="btn btn-outline-info">Show details</button>
           </div>
       </div>
       </div>
@@ -146,7 +146,6 @@ function nextPage(searchText) {
 }
 
 function getMovieDetails(imdbID) {
-  clearScreen();
   sessionStorage.setItem("movieId", imdbID);
   clearScreen();
   $.get(
@@ -157,7 +156,7 @@ function getMovieDetails(imdbID) {
 
       document.getElementById(
         "movie"
-      ).innerHTML += `<button onclick="newSearch()" type="button" class="btn btn-primary btn-sm">New Search</button>
+      ).innerHTML += `<button onclick="newSearch()" type="button" class="btn btn-outline-success">New Search</button>
       <div class="card mb-3" style="width: 80%; margin: 5% 10% 5% 10%">
       <div class="row g-0">
         <div class="col-md-4">
