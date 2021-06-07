@@ -16,7 +16,7 @@ function getSearchResults(searchText) {
   $.get(
     "https://www.omdbapi.com/?s=" +
       searchText +
-      "&apikey=<API_KEY>&page=" +
+      "&type=movie&apikey=<API_KEY>&page=" +
       pageNumber,
     function (rawdata) {
       var rawstring = JSON.stringify(rawdata);
@@ -28,7 +28,7 @@ function getSearchResults(searchText) {
         ).innerHTML += `<nav aria-label="Page navigation example">
         <ul class="pagination justify-content-end">
           <li class="page-item">
-            <a onclick="reset('${searchText}')" class="page-link" href="#" aria-label="Next">
+            <a onclick="nextPage('${searchText}')" class="page-link" href="#" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>
@@ -41,7 +41,7 @@ function getSearchResults(searchText) {
         ).innerHTML += `<nav aria-label="Page navigation example">
         <ul class="pagination justify-content-end">
         <li class="page-item">
-        <a onclick="reset('${searchText}')" class="page-link" href="#" aria-label="Next">
+        <a onclick="prevPage('${searchText}')" class="page-link" href="#" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
           <span class="sr-only">Next</span>
         </a>
@@ -54,14 +54,14 @@ function getSearchResults(searchText) {
         ).innerHTML += `<nav aria-label="Page navigation example">
         <ul class="pagination justify-content-end">
           <li class="page-item">
-            <a onclick="reset('${searchText}')" class="page-link" href="#" aria-label="Previous">
+            <a onclick="prevPage('${searchText}')" class="page-link" href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
             </a>
           </li>
 
           <li class="page-item">
-            <a onclick="reset('${searchText}')" class="page-link" href="#" aria-label="Next">
+            <a onclick="nextPage('${searchText}')" class="page-link" href="#" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>
@@ -135,8 +135,12 @@ function getSearchResults(searchText) {
   );
 }
 
-// update page number
-function reset(searchText) {
+function prevPage(searchText) {
+  pageNumber -= 1;
+  getSearchResults(searchText);
+}
+
+function nextPage(searchText) {
   pageNumber += 1;
   getSearchResults(searchText);
 }
@@ -146,7 +150,7 @@ function getMovieDetails(imdbID) {
   sessionStorage.setItem("movieId", imdbID);
   clearScreen();
   $.get(
-    "https://www.omdbapi.com/?i=" + imdbID + "&apikey=<API_KEY>",
+    "https://www.omdbapi.com/?i=" + imdbID + "&apikey=<API_KEY>&plot=full",
     function (rawdata) {
       var rawstring = JSON.stringify(rawdata);
       data = JSON.parse(rawstring);
