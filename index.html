@@ -24,14 +24,14 @@
 
 <body class="bg-dark">
   <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Cinema Search</a>
+    <a onclick="clearScreen()" class="navbar-brand" href="#">Cinema Search</a>
     <ul class="navbar-nav mr-auto">
     </ul>
     <form id="searchForm" class="form-inline my-2 my-lg-0">
       <input id="searchText" class="form-control mr-sm-2" type="search" placeholder="Enter a movie title..."
         aria-label="Search">
     </form>
-    <button onclick="clearScreen(); getSearchResults(document.getElementById('searchText').value)"
+    <button onclick="getSearchResults(document.getElementById('searchText').value)"
       class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
   </nav>
 
@@ -49,7 +49,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
   </script>
   <script src="main.js"></script>
-
 </body>
 
 </html>

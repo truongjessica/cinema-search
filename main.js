@@ -1,18 +1,29 @@
 var data;
 var pageNumber = 1;
+var currentSearch = "";
+var lastSearch = "";
 
 function clearScreen() {
   document.getElementById("movie").innerHTML = "";
 }
 
-function newSearch() {
-  clearScreen();
-  document.getElementById("searchText").value = "";
-  pageNumber = 1;
+function checkNewSearch() {
+  if (prevSearch != newSearch) {
+    clearScreen();
+    pageNumber = 1;
+  }
 }
 
 function getSearchResults(searchText) {
   clearScreen();
+
+  currentSearch = searchText;
+
+  if (currentSearch != lastSearch) {
+    pageNumber = 1;
+    lastSearch = currentSearch;
+  }
+
   $.get(
     "https://www.omdbapi.com/?s=" +
       searchText +
@@ -70,26 +81,51 @@ function getSearchResults(searchText) {
       </nav>`;
       }
 
-      for (var i = 0; i < 10; i += 5) {
+      maxResults = 10;
+      if (rawdata.totalResults < 10) {
+        maxResults = rawdata.totalResults;
+      }
+
+      for (var i = 0; i < maxResults; i += 5) {
         var firstTitle = data.Search[i].Title;
-        var firstPosterURL = data.Search[i].Poster;
         var firstIMDBid = data.Search[i].imdbID;
 
+        var firstPosterURL = data.Search[i].Poster;
+        if (firstPosterURL == "N/A") {
+          firstPosterURL = "moviePosterAlt.png";
+        }
+
         var secondTitle = data.Search[i + 1].Title;
-        var secondPosterURL = data.Search[i + 1].Poster;
         var secondIMDBid = data.Search[i + 1].imdbID;
 
+        var secondPosterURL = data.Search[i + 1].Poster;
+        if (secondPosterURL == "N/A") {
+          secondPosterURL = "moviePosterAlt.png";
+        }
+
         var thirdTitle = data.Search[i + 2].Title;
-        var thirdPosterURL = data.Search[i + 2].Poster;
         var thirdIMDBid = data.Search[i + 2].imdbID;
 
+        var thirdPosterURL = data.Search[i + 2].Poster;
+        if (thirdPosterURL == "N/A") {
+          thirdPosterURL = "moviePosterAlt.png";
+        }
+
         var fourthTitle = data.Search[i + 3].Title;
-        var fourthPosterURL = data.Search[i + 3].Poster;
         var fourthIMDBid = data.Search[i + 3].imdbID;
 
+        var fourthPosterURL = data.Search[i + 3].Poster;
+        if (fourthPosterURL == "N/A") {
+          fourthPosterURL = "moviePosterAlt.png";
+        }
+
         var fifthTitle = data.Search[i + 4].Title;
-        var fifthPosterURL = data.Search[i + 4].Poster;
         var fifthIMDBid = data.Search[i + 4].imdbID;
+
+        var fifthPosterURL = data.Search[i + 4].Poster;
+        if (fifthPosterURL == "N/A") {
+          fifthPosterURL = "moviePosterAlt.png";
+        }
 
         document.getElementById("movie").innerHTML += `
       <div class="card-deck">
@@ -97,7 +133,7 @@ function getSearchResults(searchText) {
           <img class="card-img-top" src="${firstPosterURL}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">${firstTitle}</h5>
-            <button onclick="getMovieDetails('${fourthIMDBid}')" type="button" class="btn btn-outline-info">Show details</button>
+            <button onclick="getMovieDetails('${firstIMDBid}')" type="button" class="btn btn-outline-info">Show details</button>
             </div>
         </div>
         <div class="card">
@@ -154,27 +190,62 @@ function getMovieDetails(imdbID) {
       var rawstring = JSON.stringify(rawdata);
       data = JSON.parse(rawstring);
 
+      poster = data.Poster;
+      if (poster == "N/A") {
+        poster = "moviePosterAlt.png";
+      }
+
+      title = data.Title;
+      if (title == "N/A") {
+        title = "Title Not Found";
+      }
+
+      releaseDate = data.Released;
+      if (releaseDate == "N/A") {
+        releaseDate = "Release Date Not Found";
+      }
+
+      runtime = data.Runtime;
+      if (runtime == "N/A") {
+        runtime = "Runtime Not Found";
+      }
+
+      genre = data.Genre;
+      if (genre == "N/A") {
+        genre = "Genre Not Found";
+      }
+
+      director = data.Director;
+      if (director == "N/A") {
+        director = "Director Not Found";
+      }
+
+      plot = data.Plot;
+      if (plot == "N/A") {
+        plot = "Plot Not Found";
+      }
+
       document.getElementById(
         "movie"
-      ).innerHTML += `<button onclick="newSearch()" type="button" class="btn btn-outline-success">New Search</button>
+      ).innerHTML += `<button onclick="getSearchResults(currentSearch)" type="button" class="btn btn-outline-success">Back</button>
       <div class="card mb-3" style="width: 80%; margin: 5% 10% 5% 10%">
       <div class="row g-0">
         <div class="col-md-4">
           <img
-            src="${data.Poster}"
+            src="${poster}"
             alt="..."
             class="img-fluid"
           />
         </div>
         <div class="col-md-8">
           <div class="card-body">
-          <h1 class="card-title">${data.Title}</h1>
-          <h5 class="card-title"><strong>Release date:</strong> ${data.Released}</h5>
-          <h5 class="card-title"><strong>Runtime:</strong> ${data.Runtime}</h5>
-          <h5 class="card-title"><strong>Genre:</strong> ${data.Genre}</h5>
-          <h5 class="card-title"><strong>Director:</strong> ${data.Director}</h5>
-            <p class="card-text">
-            ${data.Plot}
+          <h2 class="card-title">${title}</h2>
+          <h5 class="card-title"><strong>Release date:</strong> ${releaseDate}</h5>
+          <h5 class="card-title"><strong>Runtime:</strong> ${runtime}</h5>
+          <h5 class="card-title"><strong>Genre:</strong> ${genre}</h5>
+          <h5 class="card-title"><strong>Director:</strong> ${director}</h5>
+            <p style="font-size: 80%"class="card-text">
+            ${plot}
             </p>
           </div>
         </div>
