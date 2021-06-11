@@ -87,11 +87,48 @@ function getSearchResults(searchText) {
       }
 
       maxResults = 10;
-      if (rawdata.totalResults < 10) {
-        maxResults = rawdata.totalResults;
+      if (rawdata.totalResults < 9) {
+        maxResults = rawdata.totalResults + 1;
       }
 
+      // for queries with less than 5 results, show detailed movie cards for all results
       for (var i = 0; i < maxResults; i += 5) {
+        if (rawdata.totalResults == 1) {
+          var imdbID = data.Search[0].imdbID;
+          getMovieDetails(imdbID);
+          return;
+        }
+
+        if (rawdata.totalResults == 2) {
+          var firstIMDBid = data.Search[0].imdbID;
+          var secondIMDBid = data.Search[1].imdbID;
+          getMovieDetails(firstIMDBid);
+          getMovieDetails(secondIMDBid);
+          return;
+        }
+
+        if (rawdata.totalResults == 3) {
+          var firstIMDBid = data.Search[0].imdbID;
+          var secondIMDBid = data.Search[1].imdbID;
+          var thirdIMDBid = data.Search[2].imdbID;
+          getMovieDetails(firstIMDBid);
+          getMovieDetails(secondIMDBid);
+          getMovieDetails(thirdIMDBid);
+          return;
+        }
+
+        if (rawdata.totalResults == 4) {
+          var firstIMDBid = data.Search[0].imdbID;
+          var secondIMDBid = data.Search[1].imdbID;
+          var thirdIMDBid = data.Search[2].imdbID;
+          var fourthIMDBid = data.Search[3].imdbID;
+          getMovieDetails(firstIMDBid);
+          getMovieDetails(secondIMDBid);
+          getMovieDetails(thirdIMDBid);
+          getMovieDetails(fourthIMDBid);
+          return;
+        }
+
         var firstTitle = data.Search[i].Title;
         var firstIMDBid = data.Search[i].imdbID;
 
@@ -132,6 +169,7 @@ function getSearchResults(searchText) {
           fifthPosterURL = "moviePosterAlt.png";
         }
 
+        // create 5 x 2 grid of movie results
         document.getElementById("movie").innerHTML += `
       <div class="card-deck">
         <div class="card">
@@ -232,7 +270,9 @@ function getMovieDetails(imdbID) {
 
       document.getElementById(
         "movie"
-      ).innerHTML += `<button onclick="getSearchResults(currentSearch)" type="button" class="btn btn-outline-success">Back</button>
+      ).innerHTML += `<button onclick="getSearchResults(currentSearch)" type="button" class="btn btn-outline-success">Back</button>`;
+
+      document.getElementById("movie").innerHTML += `
       <div class="card mb-3" style="width: 80%; margin: 5% 10% 5% 10%">
       <div class="row g-0">
         <div class="col-md-4">
