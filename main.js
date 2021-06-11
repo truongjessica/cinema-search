@@ -20,7 +20,7 @@ function getSearchResults(searchText) {
   $.get(
     "https://www.omdbapi.com/?s=" +
       searchText +
-      "&type=movie&apikey=" + config.apiKey + "&page=" +
+      "&type=movie&apikey=8050d45e&page=" +
       pageNumber,
     function (rawdata) {
       var rawstring = JSON.stringify(rawdata);
@@ -181,7 +181,7 @@ function getMovieDetails(imdbID) {
   sessionStorage.setItem("movieId", imdbID);
   clearScreen();
   $.get(
-    "https://www.omdbapi.com/?i=" + imdbID + "&apikey=" + config.apiKey + "&plot=full",
+    "https://www.omdbapi.com/?i=" + imdbID + "&apikey=8050d45e&plot=full",
     function (rawdata) {
       var rawstring = JSON.stringify(rawdata);
       data = JSON.parse(rawstring);
