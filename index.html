@@ -28,8 +28,8 @@
     <ul class="navbar-nav mr-auto">
     </ul>
     <form id="searchForm" class="form-inline my-2 my-lg-0">
-      <input id="searchText" class="form-control mr-sm-2" type="search" placeholder="Enter a movie title..."
-        aria-label="Search">
+      <input onkeypress="return checkForEnterKey(event)" id="searchText" class="form-control mr-sm-2" type="search"
+        placeholder="Enter a movie title..." aria-label="Search">
     </form>
     <button onclick="getSearchResults(document.getElementById('searchText').value)"
       class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -46,15 +46,17 @@
     <div id="movie"></div>
   </div>
 
-  <!-- submit seach query when enter key pressed
+  <!-- submit seach query when enter key pressed -->
   <script>
-    document.onkeydown = function (evt) {
-      var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
-      if (keyCode == 13) {
+    function checkForEnterKey(event) {
+      event = event || window.event;
+      if (event.keyCode == 13) {
         getSearchResults(document.getElementById('searchText').value);
+        return false;
       }
+      return true;
     }
-  </script> -->
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
   </script>
   <script src='main.js'></script>

@@ -26,10 +26,19 @@ function getSearchResults(searchText) {
       var rawstring = JSON.stringify(rawdata);
       data = JSON.parse(rawstring);
 
-      if (rawdata.totalResults < 10) {
-        void(0);
+      if (data.Search == undefined) {
+        document.getElementById(
+          "movie"
+        ).innerHTML += `<div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">No Movie Found</h4>
+        <p>Darn, there were no results for your search. Go ahead, search something else.</p>
+      </div>`;
+        return;
       }
-      else if (pageNumber == 1) {
+
+      if (rawdata.totalResults < 10) {
+        void 0;
+      } else if (pageNumber == 1) {
         document.getElementById(
           "movie"
         ).innerHTML += `<nav aria-label="Page navigation example">
