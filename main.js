@@ -7,13 +7,6 @@ function clearScreen() {
   document.getElementById("movie").innerHTML = "";
 }
 
-function checkNewSearch() {
-  if (prevSearch != newSearch) {
-    clearScreen();
-    pageNumber = 1;
-  }
-}
-
 function getSearchResults(searchText) {
   clearScreen();
 
@@ -27,13 +20,16 @@ function getSearchResults(searchText) {
   $.get(
     "https://www.omdbapi.com/?s=" +
       searchText +
-      "&type=movie&apikey=<API_KEY>&page=" +
+      "&type=movie&apikey=" + config.apiKey + "&page=" +
       pageNumber,
     function (rawdata) {
       var rawstring = JSON.stringify(rawdata);
       data = JSON.parse(rawstring);
 
-      if (pageNumber == 1) {
+      if (rawdata.totalResults < 10) {
+        void(0);
+      }
+      else if (pageNumber == 1) {
         document.getElementById(
           "movie"
         ).innerHTML += `<nav aria-label="Page navigation example">
@@ -185,7 +181,7 @@ function getMovieDetails(imdbID) {
   sessionStorage.setItem("movieId", imdbID);
   clearScreen();
   $.get(
-    "https://www.omdbapi.com/?i=" + imdbID + "&apikey=<API_KEY>&plot=full",
+    "https://www.omdbapi.com/?i=" + imdbID + "&apikey=" + config.apiKey + "&plot=full",
     function (rawdata) {
       var rawstring = JSON.stringify(rawdata);
       data = JSON.parse(rawstring);
