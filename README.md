@@ -8,15 +8,15 @@ Cinema Search works by allowing users to enter a search query and retrieving the
 
 If there are ten or more results for the search query, the results will display in 5 x 2 grids with 10 results on each page as the API only provides ten results at a time. However, there is a paginification feature that allows users to show more results.
 
-<img src="https://im3.ezgif.com/tmp/ezgif-3-f0221d950a6f.gif" width="800">
+<img src="https://raw.githubusercontent.com/truongjessica/cinema-search/main/gifs/pages.gif" width="800">
 
 Users can select a specific movie to view its details.
 
-<img src="https://i.imgur.com/yoFvIEk.gif" width="800">
+<img src="https://raw.githubusercontent.com/truongjessica/cinema-search/main/gifs/movie.gif" width="800">
 
 If there are less than four results for the search query, the results will display the details for all of the results.
 
-<img src="https://im3.ezgif.com/tmp/ezgif-3-562dfc9247f1.gif" width="800">
+<img src="https://raw.githubusercontent.com/truongjessica/cinema-search/main/gifs/pages.gif" width="800">
 
 ## Cinema Search Details
 - Title
