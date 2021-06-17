@@ -16,7 +16,7 @@ Users can select a specific movie to view its details.
 
 If there are less than four results for the search query, the results will display the details for all of the results.
 
-<img src="https://raw.githubusercontent.com/truongjessica/cinema-search/main/gifs/pages.gif" width="800">
+<img src="https://raw.githubusercontent.com/truongjessica/cinema-search/main/gifs/less4.gif" width="800">
 
 ## Cinema Search Details
 - Title
